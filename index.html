@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+<title>v13 적립 규칙</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#f4f6f8;--surface:#fff;--ink:#121820;--ink-2:#46505c;--ink-3:#77818c;--line:#dce1e6;--line-2:#ebeef1;
+--qld:#2a78d6;--tqqq:#6250d6;--cut:#eb6834;--new:#1baf7a;--good:#0c8a3c;--warn:#b07400;
+--f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;--f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root{--bg:#111418;--surface:#1a1e23;--ink:#eef1f4;--ink-2:#b8c0c9;--ink-3:#8a939d;--line:#2c3239;--line-2:#22272d;
+--qld:#3987e5;--tqqq:#9085e9;--cut:#d95926;--new:#199e70;--good:#3fbf6a;--warn:#e0a326;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;padding:28px 16px 64px}
+.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+h1,h2,h3{margin:0;line-height:1.3;text-wrap:balance}
+h1{font-size:clamp(24px,5vw,32px)}h2{font-size:19px}h3{font-size:15.5px}
+p{margin:0;max-width:68ch}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.05em;color:var(--ink-3)}
+section,header{display:flex;flex-direction:column;gap:12px}
+.lead{font-size:16.5px;color:var(--ink-2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;position:relative}
+.card.qld{box-shadow:inset 4px 0 0 var(--qld)}.card.tqqq{box-shadow:inset 4px 0 0 var(--tqqq)}
+.card.cut{box-shadow:inset 4px 0 0 var(--cut)}.card.new{box-shadow:inset 4px 0 0 var(--new)}.card.cash{box-shadow:inset 4px 0 0 var(--ink-3)}
+.tag{display:inline-block;font-size:12px;font-weight:600;border:1px solid currentColor;border-radius:999px;padding:0 8px;line-height:1.7}
+.tag.new{color:var(--new)}.tag.warn{color:var(--warn)}
+.when{font-weight:600;font-size:15.5px}
+.do{font-size:15px}.do b{font-family:var(--f-mono);font-weight:500}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;color:var(--ink-2);font-size:14.5px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:8px 11px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line-2)}
+th{background:var(--bg);color:var(--ink-2);font-weight:600;font-size:12.5px}
+td:first-child,th:first-child{text-align:left}
+td{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+td.t{font-family:var(--f-body)}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.flow div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px}
+.flow b{display:block;font-family:var(--f-mono);font-size:20px;font-weight:500}
+.note{font-size:13px;color:var(--ink-3)}
+a{color:var(--qld)}
+</style></head><body><div class="wrap">
+
+<header>
+  <div class="eyebrow">QLD·TQQQ 적립 v13 · 규칙 카드 · 생성 2026-10-11</div>
+  <h1>v13 적립 규칙</h1>
+  <p class="lead">매일 조금씩 QLD를 산다. 폭락하면 TQQQ로 더 산다. 위기 신호가 켜지면 보유분 절반을 단기채로 덜어뒀다가 꺼지면 되산다.</p>
+  <div class="flow">
+    <div>매일<b>QLD 6만원</b></div>
+    <div>폭락 부스터<b>TQQQ 120만원~180만원</b></div>
+    <div>덜어두기 신호<b>2개</b>NFCI · 추세+변동성</div>
+    <div>대기 자금<b>SGOV</b></div>
+  </div>
+</header>
+
+<section>
+  <h2>① 매일 적립</h2>
+  <div class="card qld">
+    <div class="when">매 거래일</div>
+    <div class="do">QLD <b>6만원</b> (1단위). 증권사 소수점 자동적립으로 산다.</div>
+    <ul><li>성과의 본체는 부스터가 아니라 «매일 꾸준히»다.</li><li>체결은 그날 종가든 다음 날 시가든 차이가 없다(실측 −0.08%).</li></ul>
+  </div>
+</section>
+
+<section>
+  <h2>② 폭락 부스터: 언제 더 사나</h2>
+  <div class="card tqqq">
+    <div class="when">MMTW &lt; 20 <b>그리고</b> QLD가 전고점 대비 -15% 이하</div>
+    <div class="do">TQQQ <b>120만원</b> 추가 (20단위) · MMTW &lt; 10이면 <b>180만원</b> (30단위)</div>
+    <ul>
+      <li>MMTW = 미국 주식 중 20일선 위에 있는 종목 비율. 종목들이 한꺼번에 무너졌다는 뜻이다.</li>
+      <li>낙폭 문(-15%)은 «얼마나 싸졌나»를 본다. 둘 다일 때만 산다.</li>
+      <li>연 상한 7,000만원. 월 상한은 없다(해제).</li>
+      <li>TQQQ 시세를 못 구하면 부스터분도 QLD로 산다(건너뛰지 않는다).</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>③ 덜어두기 1: NFCI 축소</h2>
+  <div class="card cut">
+    <div class="when">NFCI 리스크 하위지수가 최근 3년 중 상위 20%</div>
+    <div class="do">QLD·TQQQ 보유분을 각각 <b>50%</b> 매도 → 대금은 SGOV로 대기 → 상위 20%를 벗어나면 각 계좌가 판 금액으로 같은 종목을 되산다</div>
+    <ul>
+      <li>느린 신용 하락장 보험이다. 16년 7번 중 5번은 손해였고 한 번(2021년 말)이 전부를 덮었다.</li>
+      <li>재매도 쿨다운 90일 · 주간 지표라 발표지연 7일 반영.</li>
+      <li>축소 중에도 매일 적립과 부스터는 계속한다.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>④ 덜어두기 2: 추세+변동성 <span class="tag new">2026-10-12 적용</span></h2>
+  <div class="card new">
+    <div class="when">나스닥100 종가 &lt; 200일 이동평균 <b>그리고</b> 20일 변동성(연율) &gt; 25%</div>
+    <div class="do">QLD·TQQQ 보유분 <b>50%</b> 매도 → SGOV 대기 → 둘 중 하나라도 풀리면 각자 되산다</div>
+    <ul>
+      <li>판단은 어제 종가로 한다. 매일 적립·부스터·NFCI 축소는 그대로 돈다.</li>
+      <li>NFCI와 같이 켜지면 보유분은 100% → 50% → 25%가 된다.</li>
+      <li>켜짐은 연 2번 남짓, 며칠 만에 꺼지는 깜빡임도 있다. 최장 44개월 동안 안 켜진 적이 있다.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>⑤ 대기 자금 <span class="tag new">2026-10-12 적용</span></h2>
+  <div class="card cash">
+    <div class="do">축소로 판 돈은 <b>SGOV</b>(미 초단기 국채)로 대기한다. 되사는 날 SGOV를 팔아 같은 날 산다.</div>
+    <ul><li>외화RP(자동)보다 세후 연 0.7~0.8%p 높다. 축소는 보통 몇 달 이상 이어져 왕복 비용(본전 74~87일)을 넘긴다.</li></ul>
+  </div>
+</section>
+
+<section>
+  <h2>왜 덜어두기가 둘인가</h2>
+  <p>두 신호는 잡는 하락이 다르다. NFCI는 느린 신용 하락장을 일찍 잡는다. 추세+변동성은 NFCI가 놓친 급락을 잡는다(대신 이미 −10% 안팎 빠진 뒤에 켜진다).</p>
+  <div class="tbl"><table><thead><tr><th>하락</th><th>고점 → 바닥</th><th>나스닥100</th><th>NFCI 첫 점등</th><th>추세+변동성 첫 점등</th></tr></thead><tbody><tr><td class='t'>닷컴 붕괴</td><td>2000-03 → 2002-10</td><td>-83%</td><td class='t'>고점 전부터 켜짐</td><td class='t'>2000-10-16 (나스닥 -31%)</td></tr><tr><td class='t'>금융위기</td><td>2007-10 → 2008-11</td><td>-54%</td><td class='t'>고점 전부터 켜짐</td><td class='t'>2008-01-09 (나스닥 -13%)</td></tr><tr><td class='t'>2018년 4분기</td><td>2018-08 → 2018-12</td><td>-23%</td><td class='t'>안 켜짐</td><td class='t'>2018-10-25 (나스닥 -8%)</td></tr><tr><td class='t'>코로나 급락</td><td>2020-02 → 2020-03</td><td>-28%</td><td class='t'>2020-02-28 (나스닥 -13%)</td><td class='t'>2020-03-10 (나스닥 -14%)</td></tr><tr><td class='t'>2022년 하락장</td><td>2021-11 → 2022-12</td><td>-36%</td><td class='t'>2021-11-26 (나스닥 -3%)</td><td class='t'>2022-01-31 (나스닥 -10%)</td></tr><tr><td class='t'>2025년 관세 급락</td><td>2025-02 → 2025-04</td><td>-23%</td><td class='t'>안 켜짐</td><td class='t'>2025-03-14 (나스닥 -11%)</td></tr></tbody></table></div>
+  <p class="note">2006년 전 QLD·TQQQ와 2010년 전 TQQQ는 나스닥100 일간 2·3배 합성이다.</p>
+  <div class="tbl"><table><thead><tr><th>계좌 MDD 중앙</th><th>NFCI만</th><th>둘 다</th><th>추세+변동성만</th></tr></thead><tbody><tr><td class='t'>2010~ 실물 TQQQ · 7년</td><td>-43.7%</td><td><b>-36.8%</b></td><td>-52.6%</td></tr><tr><td class='t'>2006~ · 10년</td><td>-50.1%</td><td><b>-40.0%</b></td><td>-57.6%</td></tr></tbody></table></div>
+  <p class="note">한쪽만 쓰면 둘 다 쓸 때보다 낙폭이 깊다. 대체가 아니라 추가다.</p>
+</section>
+
+<section>
+  <h2>추세+변동성을 더하면 (세후, 같은 날 같은 돈)</h2>
+  <div class="tbl"><table><thead><tr><th>구간</th><th>계좌 MDD 중앙</th><th>계좌 MDD 최악</th><th>원금 대비 최악</th><th>세후 수익</th></tr></thead><tbody><tr><td class='t'>2010~ 실물 TQQQ · 7년 창</td><td>-43.7% → <b>-36.8%</b></td><td>-54.3% → <b>-42.4%</b></td><td>-34.8% → <b>-29.7%</b></td><td>+1.2%</td></tr><tr><td class='t'>2006~ · 10년 창</td><td>-50.1% → <b>-40.0%</b></td><td>-55.0% → <b>-44.8%</b></td><td>-72.4% → <b>-57.6%</b></td><td>-6.6%</td></tr><tr><td class='t'>2000~ 닷컴 포함(합성) · 10년 창</td><td>-49.6% → <b>-40.8%</b></td><td>-74.2% → <b>-48.4%</b></td><td>-77.4% → <b>-63.5%</b></td><td>-13.3%</td></tr></tbody></table></div>
+  <ul>
+    <li>같은 날짜를 무작위로 옮긴 가짜 규칙 200개는 MDD를 거의 못 줄였다(p=0.005).</li>
+    <li>같은 수익을 내주는 현금 비중 고정이나 레버리지 낮추기보다 MDD를 3~4배 더 줄인다.</li>
+    <li>200일선을 100·150·250일선이나 EMA로 바꿔도 전부 통과했다.</li>
+    <li>한계: 신호 28개 중 고른 계열이라 여러 개를 뒤진 보정 검사는 넘지 못했다. 2008년처럼 반등이 200일선을 넘기 전까지 길면 되사기가 늦어 수익을 20% 안팎 내준다.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>하지 않는 것</h2>
+  <ul>
+    <li>MMTW를 다른 n일선 비율(5~250일)로 바꾸기: 13개 격자 전부 기각.</li>
+    <li>과매수에서 덜어내기·익절: 264조합 중 통과 0.</li>
+    <li>200일선만 보고 사고팔기: 이웃 길이에서 무너지는 스파이크였다.</li>
+    <li>폭락 중 부스터를 고르는 정교한 타이밍: 완벽히 맞혀도 +10% 안쪽이다.</li>
+  </ul>
+</section>
+
+<p class="note">개인 기록용 규칙 카드. 투자 권유가 아니다. 숫자는 qld_signal.py(배포본)와 v13_derisk_*.py 검정 결과에서 자동으로 채운다.</p>
+</div></body></html>
