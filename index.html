@@ -44,12 +44,12 @@ a{color:var(--qld)}
 <header>
   <div class="eyebrow">QLD·TQQQ 적립 v14 (v13 + 덜어두기2) · 규칙 카드 · 생성 2026-10-12</div>
   <h1>v14 적립 규칙</h1>
-  <p class="lead">매일 조금씩 QLD를 산다. 폭락하면 TQQQ로 더 산다. 위기 신호가 켜지면 보유분 절반을 단기채로 덜어뒀다가 꺼지면 되산다.</p>
+  <p class="lead">매일 조금씩 QLD를 산다. 폭락하면 TQQQ로 더 산다. 위기 신호가 켜지면 보유분 절반을 팔아 계좌에 덜어뒀다가 꺼지면 되산다.</p>
   <div class="flow">
     <div>매일<b>QLD 6만원</b></div>
     <div>폭락 부스터<b>TQQQ 120만원~180만원</b></div>
     <div>덜어두기 신호<b>2개</b>NFCI · 추세+변동성</div>
-    <div>대기 자금<b>SGOV</b></div>
+    <div>대기 자금<b>계좌에 그대로</b>외화RP 자동</div>
   </div>
 </header>
 
@@ -80,7 +80,7 @@ a{color:var(--qld)}
   <h2>③ 덜어두기 1: NFCI 축소</h2>
   <div class="card cut">
     <div class="when">NFCI 리스크 하위지수가 최근 3년 중 상위 20%</div>
-    <div class="do">QLD·TQQQ 보유분을 각각 <b>50%</b> 매도 → 대금은 SGOV로 대기 → 상위 20%를 벗어나면 각 계좌가 판 금액으로 같은 종목을 되산다</div>
+    <div class="do">QLD·TQQQ 보유분을 각각 <b>50%</b> 매도 → 대금은 계좌에 그대로 → 상위 20%를 벗어나면 각 계좌가 판 금액으로 같은 종목을 되산다</div>
     <ul>
       <li>느린 신용 하락장 보험이다. 16년 7번 중 5번은 손해였고 한 번(2021년 말)이 전부를 덮었다.</li>
       <li>재매도 쿨다운 90일 · 주간 지표라 발표지연 7일 반영.</li>
@@ -93,7 +93,7 @@ a{color:var(--qld)}
   <h2>④ 덜어두기 2: 추세+변동성 <span class="tag new">2026-10-12 적용</span></h2>
   <div class="card new">
     <div class="when">나스닥100 종가 &lt; 200일 이동평균 <b>그리고</b> 20일 변동성(연율) &gt; 25%</div>
-    <div class="do">QLD·TQQQ 보유분 <b>50%</b> 매도 → SGOV 대기 → 둘 중 하나라도 풀리면 각자 되산다</div>
+    <div class="do">QLD·TQQQ 보유분 <b>50%</b> 매도 → 대금은 계좌에 그대로 → 둘 중 하나라도 풀리면 각자 되산다</div>
     <ul>
       <li>판단은 어제 종가로 한다. 매일 적립·부스터·NFCI 축소는 그대로 돈다.</li>
       <li>NFCI와 같이 켜지면 보유분은 100% → 50% → 25%가 된다.</li>
@@ -105,8 +105,12 @@ a{color:var(--qld)}
 <section>
   <h2>⑤ 대기 자금 <span class="tag new">2026-10-12 적용</span></h2>
   <div class="card cash">
-    <div class="do">축소로 판 돈은 <b>SGOV</b>(미 초단기 국채)로 대기한다. 되사는 날 SGOV를 팔아 같은 날 산다.</div>
-    <ul><li>외화RP(자동)보다 세후 연 0.7~0.8%p 높다. 축소는 보통 몇 달 이상 이어져 왕복 비용(본전 74~87일)을 넘긴다.</li></ul>
+    <div class="do">두 덜어두기 모두 판 돈은 <b>각 계좌에 그대로</b> 둔다(달러 예수금, 메리츠 외화RP 자동 · 주문 없음). 되사는 날 그 돈으로 같은 종목을 산다.</div>
+    <ul>
+      <li>SGOV는 사고팔 때 왕복 약 0.16%가 들어 83~89일 넘게 머물러야 외화RP를 이긴다. 덜어두기2는 대기 중앙 6일이라 1987년 이후 78번 중 5~6번만 SGOV가 이겼다.</li>
+      <li>NFCI는 대기가 길어 SGOV가 조금 낫지만 2006년 이후 20년 누적으로 대기 금액의 1.7~1.9% 차이다. 헷갈리지 않게 두 신호를 같은 방식으로 통일했다.</li>
+      <li>자동 외화RP가 없는 계좌면 그 돈이 0%로 논다. 그때는 18일만 넘어도 SGOV가 낫다.</li>
+    </ul>
   </div>
 </section>
 
