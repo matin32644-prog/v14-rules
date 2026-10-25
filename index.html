@@ -39,12 +39,32 @@ td.t{font-family:var(--f-body)}
 .flow b{display:block;font-family:var(--f-mono);font-size:20px;font-weight:500}
 .note{font-size:13px;color:var(--ink-3)}
 a{color:var(--qld)}
+/* textfx v1 (2026-10-25) · 글자 효과 8종 스타일. 색은 페이지 토큰(--fx-chip, --fx-chip-ink, --fx-marker)이 있으면 그걸 쓴다.
+   쉬는 상태(스크립트 전·움직임 줄이기 설정)는 항상 글자가 다 보인다. */
+.fx-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.fx-caret{display:inline-block;width:.07em;height:1em;margin-left:.08em;vertical-align:-.12em;background:currentColor;animation:fx-blink 1s steps(1) infinite}
+@keyframes fx-blink{50%{opacity:0}}
+.fx-rot{display:inline-grid;vertical-align:bottom;overflow:hidden;padding:0 .2em;border-radius:.25em;
+  background:var(--fx-chip,rgba(37,99,235,.12));color:var(--fx-chip-ink,inherit)}
+.fx-rot>span{grid-area:1/1;text-align:center;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .5s}
+.fx-rot>span.fx-in{transform:translateY(100%);opacity:0}
+.fx-rot>span.fx-out{transform:translateY(-100%);opacity:0}
+.fx-m{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.1em;margin-bottom:-.1em}
+.fx-m>span,.fx-c,.fx-b{display:inline-block;white-space:pre}
+.fx-hw{transition:opacity .3s}
+.fx-hw.fx-dim{opacity:.28}
+.fx-mk{background-image:linear-gradient(transparent 56%,var(--fx-marker,#fde68a) 56%,var(--fx-marker,#fde68a) 92%,transparent 92%);
+  background-repeat:no-repeat;background-size:100% 100%;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.fx-mk.fx-mk-0{background-size:0% 100%}
+.fx-mk.fx-mk-go{transition:background-size .9s cubic-bezier(.3,.7,.2,1)}
+@media (prefers-reduced-motion:reduce){.fx-caret{animation:none}.fx-rot>span{transition:none}}
+:root{--fx-marker:#fde68a}@media (prefers-color-scheme:dark){:root{--fx-marker:#6b5412}}
 </style></head><body><div class="wrap">
 
 <header>
   <div class="eyebrow">QLD·TQQQ 적립 v14 (v13 + 덜어두기2) · 규칙 카드 · 생성 2026-10-12</div>
-  <h1>덜 벌고 덜 빠지는 v14 적립 규칙</h1>
-  <p class="lead">매일 조금씩 QLD를 산다. 폭락하면 TQQQ로 더 산다. 위기 신호가 켜지면 보유분 절반을 팔아 계좌에 덜어뒀다가 꺼지면 되산다. v13보다 조금 덜 벌더라도 낙폭을 줄이는 쪽을 고른 버전이다.</p>
+  <h1 data-fx="mask">덜 벌고 덜 빠지는 v14 적립 규칙</h1>
+  <p class="lead">매일 조금씩 QLD를 산다. 폭락하면 TQQQ로 더 산다. 위기 신호가 켜지면 보유분 절반을 팔아 계좌에 덜어뒀다가 꺼지면 되산다. v13보다 조금 덜 벌더라도 <span data-fx="marker">낙폭을 줄이는 쪽</span>을 고른 버전이다.</p>
   <div class="flow">
     <div>매일<b>QLD 6만원</b></div>
     <div>폭락 부스터<b>TQQQ 120만원~180만원</b></div>
@@ -145,4 +165,193 @@ a{color:var(--qld)}
 </section>
 
 <p class="note">개인 기록용 규칙 카드. 투자 권유가 아니다. 숫자는 qld_signal.py(배포본)와 v13_derisk_*.py 검정 결과에서 자동으로 채운다.</p>
-</div></body></html>
+</div><script>/* textfx v1 (2026-10-25) · 글자 효과 8종. 출처: 스레드 @bokmanhi «글자 효과 용어 8개» (텔레그램 10563)
+   쓰는 법: 요소에 data-fx="이름" → 스크립트가 알아서 돈다. 이름:
+     type(타이핑·한글은 자모 조합) · rotate(단어 순환, data-words="운영|관리|기록") · mask(마스크 리빌) · split(글자별 시간차)
+     scramble(텍스트 스크램블) · blur(블러 리빌) · scroll-hl(스크롤 따라 단어 밝아짐) · marker(형광펜)
+   공통 옵션: data-delay(ms) · data-on="load"(화면 밖이어도 바로) · type에 data-jamo="0"(자모 조합 끄기)·data-caret="keep"
+   규칙: 쉬는 상태는 항상 다 보이는 글자다(스크립트 전·움직임 줄이기 설정·화면 밖). 화면에 들어올 때 한 번 재생한다.
+   type·mask·split·scramble·blur는 요소 안 태그를 글자만 남긴다. 다시 재생: TextFX.play(el) · 속도: TextFX.speed(1.5) */
+(function (G) {
+  "use strict";
+  var D = G.document;
+  var RM = !!(G.matchMedia && G.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var K = 1;                                  // 속도 배율(클수록 느림)
+  var L0 = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+  var HAN = "가나다라마바사아자차카타파하고노도로모보소오조초코토포호구누두루무부수우주추쿠투푸후";
+  var LAT = "ABCDEFGHJKLMNPQRSTUVWXYZ", DIG = "0123456789", SYM = "#&%$@*+=?";
+
+  function t(ms) { return ms * K; }
+  function orig(el) {
+    if (el.dataset.fxText == null) el.dataset.fxText = el.textContent;
+    return el.dataset.fxText;
+  }
+  function reset(el, text) {                  // 화면 읽기용 원문 한 벌(숨김) + 움직이는 글자는 aria-hidden
+    el.textContent = "";
+    var sr = D.createElement("span"); sr.className = "fx-sr"; sr.textContent = text; el.appendChild(sr);
+  }
+  function hid(tag, cls) { var s = D.createElement(tag || "span"); if (cls) s.className = cls; s.setAttribute("aria-hidden", "true"); return s; }
+  function wordsOf(text) { return text.split(/(\s+)/).filter(function (x) { return x.length; }); }
+  function stopTimers(el) { (el._fxT || []).forEach(function (x) { clearTimeout(x); clearInterval(x); }); el._fxT = []; if (el._fxR) cancelAnimationFrame(el._fxR); }
+  function later(el, fn, ms) { (el._fxT = el._fxT || []).push(setTimeout(fn, ms)); }
+
+  // 1 타이핑: 한글은 ㅌ → 타 → 탕처럼 자모가 조합되는 단계까지
+  function typeSteps(s, jamo) {
+    var out = [], pre = "";
+    for (var i = 0; i < s.length; i++) {
+      var c = s[i], code = s.charCodeAt(i) - 0xAC00;
+      if (jamo && code >= 0 && code < 11172) {
+        var l = Math.floor(code / 588), v = Math.floor((code % 588) / 28), tt = code % 28;
+        out.push(pre + L0[l]);
+        if (tt) out.push(pre + String.fromCharCode(0xAC00 + l * 588 + v * 28));
+      }
+      pre += c; out.push(pre);
+    }
+    return out;
+  }
+  function fxType(el) {
+    var s = orig(el), steps = typeSteps(s, el.dataset.jamo !== "0");
+    reset(el, s);
+    var box = hid("span"), caret = hid("span", "fx-caret");
+    el.appendChild(box); el.appendChild(caret);
+    var i = 0, step = t(s.length > 24 ? 35 : 60);
+    (function tick() {
+      box.textContent = steps[i++];
+      if (i < steps.length) later(el, tick, step);
+      else if (el.dataset.caret !== "keep") later(el, function () { caret.remove(); }, t(1600));
+    })();
+  }
+
+  // 2 단어 순환: 칸 폭은 가장 긴 단어에 맞춰 고정(글이 출렁이지 않게)
+  function fxRotate(el) {
+    var ws = (el.dataset.words || orig(el)).split("|").map(function (x) { return x.trim(); }).filter(Boolean);
+    reset(el, ws.join(", "));
+    var box = hid("span", "fx-rot");
+    var spans = ws.map(function (w, k) { var x = D.createElement("span"); x.textContent = w; if (k) x.className = "fx-in"; box.appendChild(x); return x; });
+    el.appendChild(box);
+    if (RM || ws.length < 2) return;
+    var cur = 0, gap = +(el.dataset.every || 2200);
+    el._fxT.push(setInterval(function () {
+      var a = spans[cur], b = spans[(cur + 1) % spans.length];
+      b.style.transition = "none"; b.className = "fx-in"; void b.offsetWidth; b.style.transition = "";
+      a.className = "fx-out"; b.className = "";
+      cur = (cur + 1) % spans.length;
+    }, t(gap)));
+  }
+
+  // 3 마스크 리빌 · 4 스플릿 · 6 블러 리빌: 단어나 글자 조각을 시간차로 등장
+  function pieces(el, mode) {
+    var s = orig(el); reset(el, s);
+    var wrap = hid("span"); el.appendChild(wrap);
+    var list = [];
+    wordsOf(s).forEach(function (w) {
+      if (/^\s+$/.test(w)) { wrap.appendChild(D.createTextNode(w)); return; }
+      if (mode === "mask") { var m = D.createElement("span"); m.className = "fx-m"; var inner = D.createElement("span"); inner.textContent = w; m.appendChild(inner); wrap.appendChild(m); list.push(inner); }
+      else if (mode === "split") { var ww = D.createElement("span"); ww.style.whiteSpace = "nowrap"; Array.prototype.forEach.call(w, function (ch) { var c = D.createElement("span"); c.className = "fx-c"; c.textContent = ch; ww.appendChild(c); list.push(c); }); wrap.appendChild(ww); }
+      else { var b = D.createElement("span"); b.className = "fx-b"; b.textContent = w; wrap.appendChild(b); list.push(b); }
+    });
+    return list;
+  }
+  function animate(list, frames, dur, gap) {
+    if (!list.length || !list[0].animate) return;
+    list.forEach(function (x, k) { x.animate(frames, { duration: t(dur), delay: t(k * gap), easing: "cubic-bezier(.2,.7,.2,1)", fill: "backwards" }); });
+  }
+  function fxMask(el) { animate(pieces(el, "mask"), [{ transform: "translateY(105%)" }, { transform: "none" }], 700, 55); }
+  function fxSplit(el) { animate(pieces(el, "split"), [{ opacity: 0, transform: "translateY(.4em)" }, { opacity: 1, transform: "none" }], 520, 28); }
+  function fxBlur(el) { animate(pieces(el, "blur"), [{ opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0)" }], 800, 70); }
+
+  // 5 스크램블: 같은 종류(한글·영문·숫자) 글자로 뒤섞이다가 왼쪽부터 자리 잡음
+  function rnd(ch) {
+    var code = ch.charCodeAt(0);
+    var pool = (code >= 0xAC00 && code < 0xD7A4) ? HAN : /[0-9]/.test(ch) ? DIG : /[A-Za-z]/.test(ch) ? LAT : /\s/.test(ch) ? null : SYM;
+    return pool ? pool[Math.floor(Math.random() * pool.length)] : ch;
+  }
+  function fxScramble(el) {
+    var s = orig(el); reset(el, s);
+    var box = hid("span"); el.appendChild(box);
+    var start = performance.now(), hold = t(350), per = t(55), last = 0;
+    (function frame(now) {
+      var done = Math.max(0, Math.floor((now - start - hold) / per));
+      if (now - last > 45) {
+        last = now;
+        var o = "";
+        for (var i = 0; i < s.length; i++) o += i < done ? s[i] : rnd(s[i]);
+        box.textContent = o;
+      }
+      if (done < s.length) el._fxR = requestAnimationFrame(frame);
+      else box.textContent = s;
+    })(start);
+  }
+
+  // 7 스크롤 하이라이트: 화면을 지나가는 만큼 단어가 차례로 밝아짐(쉬는 상태도 흐리게 읽힘)
+  var hlList = [];
+  function fxScrollHl(el) {
+    var s = orig(el); reset(el, s);
+    var wrap = hid("span"); el.appendChild(wrap);
+    var ws = [];
+    wordsOf(s).forEach(function (w) {
+      if (/^\s+$/.test(w)) { wrap.appendChild(D.createTextNode(w)); return; }
+      var x = D.createElement("span"); x.className = "fx-hw" + (RM ? "" : " fx-dim"); x.textContent = w; wrap.appendChild(x); ws.push(x);
+    });
+    if (RM) return;
+    hlList.push({ el: el, ws: ws });
+    hlUpdate();
+  }
+  function hlUpdate() {
+    var vh = G.innerHeight || 800;
+    hlList.forEach(function (o) {
+      var r = o.el.getBoundingClientRect();
+      var p = (vh * 0.85 - r.top) / (r.height + vh * 0.35);
+      var n = Math.round(Math.max(0, Math.min(1, p)) * o.ws.length);
+      o.ws.forEach(function (w, k) { w.classList.toggle("fx-dim", k >= n); });
+    });
+  }
+  G.addEventListener("scroll", function () { if (hlList.length) requestAnimationFrame(hlUpdate); }, { passive: true });
+  G.addEventListener("resize", function () { if (hlList.length) hlUpdate(); });
+
+  // 8 형광펜: 글자 밑 절반에 형광 띠가 왼쪽부터 칠해짐(안쪽 태그 유지)
+  function fxMarker(el) {
+    el.classList.add("fx-mk");
+    if (RM) return;
+    el.classList.remove("fx-mk-go"); el.classList.add("fx-mk-0"); void el.offsetWidth;
+    el.classList.add("fx-mk-go"); el.classList.remove("fx-mk-0");
+  }
+
+  var FX = { type: fxType, rotate: fxRotate, mask: fxMask, split: fxSplit, scramble: fxScramble, blur: fxBlur, "scroll-hl": fxScrollHl, marker: fxMarker };
+
+  function play(el) {
+    var f = FX[el.dataset.fx];
+    if (!f) return;
+    stopTimers(el);
+    if (el.dataset.fx !== "marker" && el.dataset.fx !== "rotate" && el.dataset.fxText != null) el.textContent = el.dataset.fxText;
+    if (RM && el.dataset.fx !== "rotate" && el.dataset.fx !== "scroll-hl" && el.dataset.fx !== "marker") { orig(el); return; }
+    f(el);
+  }
+  function inView(el) { var r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < (G.innerHeight || 800); }
+  var io = ("IntersectionObserver" in G) ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); kick(e.target); } });
+  }, { threshold: 0 }) : null;
+  function kick(el) { var d = +(el.dataset.delay || 0); if (d) later(el, function () { play(el); }, d); else play(el); }
+
+  function run(root) {
+    Array.prototype.forEach.call((root || D).querySelectorAll("[data-fx]"), function (el) {
+      if (el._fxDone) return; el._fxDone = true; el._fxT = [];
+      var fx = el.dataset.fx;
+      if (fx === "rotate" || fx === "scroll-hl" || el.dataset.on === "load" || inView(el) || !io) kick(el);
+      else io.observe(el);                   // 화면 밖은 글자가 다 보이는 채로 두었다가 들어올 때 한 번
+    });
+  }
+  // 효과를 걷어내고 원래 내용(html)으로 되돌린다. 시안 비교처럼 같은 요소에 효과를 바꿔 끼울 때
+  function clearFx(el, html) {
+    stopTimers(el);
+    if (html != null) el.innerHTML = html; else if (el.dataset.fxText != null) el.textContent = el.dataset.fxText;
+    ["data-fx", "data-fx-text", "data-words", "data-delay", "data-on", "data-caret", "data-jamo", "data-every"].forEach(function (a) { el.removeAttribute(a); });
+    el.classList.remove("fx-mk", "fx-mk-0", "fx-mk-go");
+    hlList = hlList.filter(function (o) { return o.el !== el; });
+    if (io) io.unobserve(el);
+    el._fxDone = false;
+  }
+  G.TextFX = { run: run, play: play, reset: clearFx, speed: function (k) { K = k > 0 ? k : 1; }, reduced: RM };
+  if (D.readyState === "loading") D.addEventListener("DOMContentLoaded", function () { run(); }); else run();
+})(window);
+</script></body></html>
