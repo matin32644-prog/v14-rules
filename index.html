@@ -39,8 +39,6 @@ td.t{font-family:var(--f-body)}
 .flow b{display:block;font-family:var(--f-mono);font-size:20px;font-weight:500}
 .note{font-size:13px;color:var(--ink-3)}
 a{color:var(--qld)}
-/* textfx v1 (2026-10-25) · 글자 효과 8종 스타일. 색은 페이지 토큰(--fx-chip, --fx-chip-ink, --fx-marker)이 있으면 그걸 쓴다.
-   쉬는 상태(스크립트 전·움직임 줄이기 설정)는 항상 글자가 다 보인다. */
 .fx-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 .fx-caret{display:inline-block;width:.07em;height:1em;margin-left:.08em;vertical-align:-.12em;background:currentColor;animation:fx-blink 1s steps(1) infinite}
 @keyframes fx-blink{50%{opacity:0}}
@@ -62,7 +60,7 @@ a{color:var(--qld)}
 </style></head><body><div class="wrap">
 
 <header>
-  <div class="eyebrow">QLD·TQQQ 적립 v14 (v13 + 덜어두기2) · 규칙 카드 · 생성 2026-10-12</div>
+  <div class="eyebrow">QLD·TQQQ 적립 v14 (v13 + 덜어두기2) · 규칙 카드 · 생성 2026-11-13</div>
   <h1 data-fx="mask">덜 벌고 덜 빠지는 v14 적립 규칙</h1>
   <p class="lead">매일 조금씩 QLD를 산다. 폭락하면 TQQQ로 더 산다. 위기 신호가 켜지면 보유분 절반을 팔아 계좌에 덜어뒀다가 꺼지면 되산다. v13보다 조금 덜 벌더라도 <span data-fx="marker">낙폭을 줄이는 쪽</span>을 고른 버전이다.</p>
   <div class="flow">
@@ -78,6 +76,7 @@ a{color:var(--qld)}
   <div class="card qld">
     <div class="when">매 거래일</div>
     <div class="do">QLD <b>6만원</b> (1단위). 증권사 소수점 자동적립으로 산다.</div>
+    <p class="note">2026-11-13 결정: 다음 부스터 발동일부터 1단위 <b>10만원</b>(기본 매일 10만원 · 부스터 200만원~300만원).</p>
     <ul><li>성과의 본체는 부스터가 아니라 «매일 꾸준히»다.</li><li>체결은 그날 종가든 다음 날 시가든 차이가 없다(실측 −0.08%).</li></ul>
   </div>
 </section>
@@ -90,7 +89,7 @@ a{color:var(--qld)}
     <ul>
       <li>MMTW = 미국 주식 중 20일선 위에 있는 종목 비율. 종목들이 한꺼번에 무너졌다는 뜻이다.</li>
       <li>낙폭 문(-15%)은 «얼마나 싸졌나»를 본다. 둘 다일 때만 산다.</li>
-      <li>연 상한 7,000만원. 월 상한은 없다(해제).</li>
+      <li>연 상한 7,000만원. 닿기 전엔 깎지 않는다. 넘은 뒤엔 <b>기본 적립을 멈추고(자동적립 끔) 부스터 날만</b> 산다. 넘는 돈은 마통·예비자금, 1월 첫 거래일에 기본 적립 다시. 월 상한은 없다(해제).</li>
       <li>TQQQ 시세를 못 구하면 부스터분도 QLD로 산다(건너뛰지 않는다).</li>
     </ul>
   </div>
@@ -166,28 +165,20 @@ a{color:var(--qld)}
 </section>
 
 <p class="note">개인 기록용 규칙 카드. 투자 권유가 아니다. 숫자는 qld_signal.py(배포본)와 v13_derisk_*.py 검정 결과에서 자동으로 채운다.</p>
-</div><script>/* textfx v1 (2026-10-25) · 글자 효과 8종. 출처: 스레드 @bokmanhi «글자 효과 용어 8개» (텔레그램 10563)
-   쓰는 법: 요소에 data-fx="이름" → 스크립트가 알아서 돈다. 이름:
-     type(타이핑·한글은 자모 조합) · rotate(단어 순환, data-words="운영|관리|기록") · mask(마스크 리빌) · split(글자별 시간차)
-     scramble(텍스트 스크램블) · blur(블러 리빌) · scroll-hl(스크롤 따라 단어 밝아짐) · marker(형광펜)
-   공통 옵션: data-delay(ms) · data-on="load"(화면 밖이어도 바로) · type에 data-jamo="0"(자모 조합 끄기)·data-caret="keep"
-   규칙: 쉬는 상태는 항상 다 보이는 글자다(스크립트 전·움직임 줄이기 설정·화면 밖). 화면에 들어올 때 한 번 재생한다.
-   type·mask·split·scramble·blur는 요소 안 태그를 글자만 남긴다. 다시 재생: TextFX.play(el) · 속도: TextFX.speed(1.5) */
-(function (G) {
+</div><script>(function (G) {
   "use strict";
   var D = G.document;
   var RM = !!(G.matchMedia && G.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  var K = 1;                                  // 속도 배율(클수록 느림)
+  var K = 1;
   var L0 = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
   var HAN = "가나다라마바사아자차카타파하고노도로모보소오조초코토포호구누두루무부수우주추쿠투푸후";
   var LAT = "ABCDEFGHJKLMNPQRSTUVWXYZ", DIG = "0123456789", SYM = "#&%$@*+=?";
-
   function t(ms) { return ms * K; }
   function orig(el) {
     if (el.dataset.fxText == null) el.dataset.fxText = el.textContent;
     return el.dataset.fxText;
   }
-  function reset(el, text) {                  // 화면 읽기용 원문 한 벌(숨김) + 움직이는 글자는 aria-hidden
+  function reset(el, text) {
     el.textContent = "";
     var sr = D.createElement("span"); sr.className = "fx-sr"; sr.textContent = text; el.appendChild(sr);
   }
@@ -195,8 +186,6 @@ a{color:var(--qld)}
   function wordsOf(text) { return text.split(/(\s+)/).filter(function (x) { return x.length; }); }
   function stopTimers(el) { (el._fxT || []).forEach(function (x) { clearTimeout(x); clearInterval(x); }); el._fxT = []; if (el._fxR) cancelAnimationFrame(el._fxR); }
   function later(el, fn, ms) { (el._fxT = el._fxT || []).push(setTimeout(fn, ms)); }
-
-  // 1 타이핑: 한글은 ㅌ → 타 → 탕처럼 자모가 조합되는 단계까지
   function typeSteps(s, jamo) {
     var out = [], pre = "";
     for (var i = 0; i < s.length; i++) {
@@ -222,8 +211,6 @@ a{color:var(--qld)}
       else if (el.dataset.caret !== "keep") later(el, function () { caret.remove(); }, t(1600));
     })();
   }
-
-  // 2 단어 순환: 칸 폭은 가장 긴 단어에 맞춰 고정(글이 출렁이지 않게)
   function fxRotate(el) {
     var ws = (el.dataset.words || orig(el)).split("|").map(function (x) { return x.trim(); }).filter(Boolean);
     reset(el, ws.join(", "));
@@ -239,8 +226,6 @@ a{color:var(--qld)}
       cur = (cur + 1) % spans.length;
     }, t(gap)));
   }
-
-  // 3 마스크 리빌 · 4 스플릿 · 6 블러 리빌: 단어나 글자 조각을 시간차로 등장
   function pieces(el, mode) {
     var s = orig(el); reset(el, s);
     var wrap = hid("span"); el.appendChild(wrap);
@@ -260,8 +245,6 @@ a{color:var(--qld)}
   function fxMask(el) { animate(pieces(el, "mask"), [{ transform: "translateY(105%)" }, { transform: "none" }], 700, 55); }
   function fxSplit(el) { animate(pieces(el, "split"), [{ opacity: 0, transform: "translateY(.4em)" }, { opacity: 1, transform: "none" }], 520, 28); }
   function fxBlur(el) { animate(pieces(el, "blur"), [{ opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0)" }], 800, 70); }
-
-  // 5 스크램블: 같은 종류(한글·영문·숫자) 글자로 뒤섞이다가 왼쪽부터 자리 잡음
   function rnd(ch) {
     var code = ch.charCodeAt(0);
     var pool = (code >= 0xAC00 && code < 0xD7A4) ? HAN : /[0-9]/.test(ch) ? DIG : /[A-Za-z]/.test(ch) ? LAT : /\s/.test(ch) ? null : SYM;
@@ -283,8 +266,6 @@ a{color:var(--qld)}
       else box.textContent = s;
     })(start);
   }
-
-  // 7 스크롤 하이라이트: 화면을 지나가는 만큼 단어가 차례로 밝아짐(쉬는 상태도 흐리게 읽힘)
   var hlList = [];
   function fxScrollHl(el) {
     var s = orig(el); reset(el, s);
@@ -309,17 +290,13 @@ a{color:var(--qld)}
   }
   G.addEventListener("scroll", function () { if (hlList.length) requestAnimationFrame(hlUpdate); }, { passive: true });
   G.addEventListener("resize", function () { if (hlList.length) hlUpdate(); });
-
-  // 8 형광펜: 글자 밑 절반에 형광 띠가 왼쪽부터 칠해짐(안쪽 태그 유지)
   function fxMarker(el) {
     el.classList.add("fx-mk");
     if (RM) return;
     el.classList.remove("fx-mk-go"); el.classList.add("fx-mk-0"); void el.offsetWidth;
     el.classList.add("fx-mk-go"); el.classList.remove("fx-mk-0");
   }
-
   var FX = { type: fxType, rotate: fxRotate, mask: fxMask, split: fxSplit, scramble: fxScramble, blur: fxBlur, "scroll-hl": fxScrollHl, marker: fxMarker };
-
   function play(el) {
     var f = FX[el.dataset.fx];
     if (!f) return;
@@ -333,16 +310,14 @@ a{color:var(--qld)}
     es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); kick(e.target); } });
   }, { threshold: 0 }) : null;
   function kick(el) { var d = +(el.dataset.delay || 0); if (d) later(el, function () { play(el); }, d); else play(el); }
-
   function run(root) {
     Array.prototype.forEach.call((root || D).querySelectorAll("[data-fx]"), function (el) {
       if (el._fxDone) return; el._fxDone = true; el._fxT = [];
       var fx = el.dataset.fx;
       if (fx === "rotate" || fx === "scroll-hl" || el.dataset.on === "load" || inView(el) || !io) kick(el);
-      else io.observe(el);                   // 화면 밖은 글자가 다 보이는 채로 두었다가 들어올 때 한 번
+      else io.observe(el);
     });
   }
-  // 효과를 걷어내고 원래 내용(html)으로 되돌린다. 시안 비교처럼 같은 요소에 효과를 바꿔 끼울 때
   function clearFx(el, html) {
     stopTimers(el);
     if (html != null) el.innerHTML = html; else if (el.dataset.fxText != null) el.textContent = el.dataset.fxText;
